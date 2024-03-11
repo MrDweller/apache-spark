@@ -12,7 +12,7 @@ spark = SparkSession.builder\
 
 spark.sparkContext.setLogLevel("WARN")
 
-df = spark.read.options(inferSchema='True').csv("data/mower/mower-900.csv", header=True)
+df = spark.read.options(inferSchema='True').csv("data/mower/mower-1000.csv", header=True)
 
 df.show()
 
