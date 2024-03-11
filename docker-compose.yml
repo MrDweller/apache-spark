@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  spark-master:
+    build: .
+    container_name: spark-master
+    command: bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ./applications:/opt/bitnami/spark/applications
+      - ./data:/opt/bitnami/spark/data
+      - ./spark-conf.xml:/opt/spark/conf/spark-conf.xml
+  spark-worker-1:
+    build: .
+    container_name: spark-worker-1
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+      SPARK_MASTER_URL: spark://spark-master:7077
+    ports:
+      - 8081:8081
+    volumes:
+      - ./data:/opt/bitnami/spark/data
+      - ./spark-conf.xml:/opt/spark/conf/spark-conf.xml
+  spark-worker-2:
+    build: .
+    container_name: spark-worker-2
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+      SPARK_MASTER_URL: spark://spark-master:7077
+    ports:
+      - 8082:8081
+    volumes:
+      - ./data:/opt/bitnami/spark/data
+      - ./spark-conf.xml:/opt/spark/conf/spark-conf.xml

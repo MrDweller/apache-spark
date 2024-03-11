@@ -1,0 +1,9 @@
+<property>
+  <name>fs.azure.account.key.<account_name>.dfs.core.windows.net</name>
+  <value>Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==</value>
+</property>
+
+<property>
+  <name>fs.defaultFS</name>
+  <value>wasb://mycontainer@devstoreaccount1.dfs.core.windows.net</value>
+</property>
