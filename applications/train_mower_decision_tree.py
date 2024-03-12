@@ -17,8 +17,8 @@ df = spark.read.options(inferSchema='True').csv("data/mower/mower-1000.csv", hea
 df.show()
 
 string_indexer = StringIndexer(inputCol='state', outputCol='index').setHandleInvalid("keep")
-model = string_indexer.fit(df)
-df = model.transform(df).select('speed', 'vibration', col('index').cast('int'), 'state')
+indexerModel  = string_indexer.fit(df)
+df = indexerModel.transform(df).select('speed', 'vibration', col('index').cast('int'), 'state')
 df.show()
 
 # # Create a feature vector
@@ -37,6 +37,8 @@ dt = DecisionTreeClassifier(labelCol="index", featuresCol="features")
 model_dt = dt.fit(train_data)
 
 model_dt.save("data/models/mower_decision_tree")
+
+indexerModel.save("data/models/mower_string_indexer")
 
 predictions_dt = model_dt.transform(test_data)
 
