@@ -9,7 +9,7 @@ fi
 
 # Check if the file exists in ./applications
 filename="$1"
-filepath="./applications/$filename"
+filepath="$filename"
 
 if [ ! -f "$filepath" ]; then
   echo "Error: File '$filepath' does not exist."
