@@ -1,2 +1,2 @@
-id,timestamp,speed,vibration,pos-x,pos-y,state
+id,timestamp,speed,vibration,pos-x,pos-y
 mower-1,2024-03-11T09:11:43.323596,1,120,13,1
