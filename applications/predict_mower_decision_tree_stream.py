@@ -10,12 +10,16 @@ import os
 import arrowhead.serviceregistry
 import arrowhead.orchestrator
 
-CERT_FILE_PATH = "applications/certificates/anomaly-detector-decision-tree-cert.pem"
-KEY_FILE_PATH="applications/certificates/anomaly-detector-decision-tree-key.pem"
 
-ADDRESS=os.environ["ADDRESS"]
-PORT=os.environ["PORT"]
+CERT_FILE_PATH = os.environ["CERT_FILE_PATH"]
+KEY_FILE_PATH = os.environ["KEY_FILE_PATH"]
+
+ADDRESS=os.environ["DOMAIN_ADDRESS"]
+PORT=os.environ["DOMAIN_PORT"]
 SYSTEM_NAME="anomaly-detector-decision-tree"
+SERVICE_REGISTRY_ADDRESS = os.environ["SERVICE_REGISTRY_ADDRESS"]
+SERVICE_REGISTRY_PORT = serviceregistry_port=os.environ["SERVICE_REGISTRY_PORT"]
+SERVICE_REGISTRY_SECURITY_MODE = serviceregistry_security_mode=os.environ["SERVICE_REGISTRY_SECURITY_MODE"]
 
 def handle_stream_prediction(df, epoch_id):
     df.show()
@@ -43,9 +47,23 @@ def handle_stream_prediction(df, epoch_id):
 
 
 if __name__ == "__main__":
-    
+
     # Register this anomaly detector in the arrowhead service registry
-    arrowhead.serviceregistry.register_system(address=ADDRESS, port=PORT, system_name=SYSTEM_NAME, cert=(CERT_FILE_PATH, KEY_FILE_PATH))
+    arrowhead.serviceregistry.register_system(
+        address=ADDRESS, 
+        port=PORT, 
+        system_name=SYSTEM_NAME, 
+        serviceregistry_config=arrowhead.serviceregistry.ServiceRegistryConfig(
+            serviceregistry_address=SERVICE_REGISTRY_ADDRESS,
+            serviceregistry_port=SERVICE_REGISTRY_PORT,
+            serviceregistry_security_mode=arrowhead.serviceregistry.security.SecurityMode.from_str(SERVICE_REGISTRY_SECURITY_MODE),
+        ), 
+        cert=(CERT_FILE_PATH, KEY_FILE_PATH)
+    )
+
+    stream_directory =  "data/stream/mower" # stream data from a local directory 
+    if not os.path.exists(stream_directory):
+        os.makedirs(stream_directory)
 
     spark = SparkSession.builder\
         .appName("Predict mower stream data")\
@@ -59,7 +77,7 @@ if __name__ == "__main__":
         .schema('id STRING, timestamp STRING, speed FLOAT, vibration FLOAT, `pos-x` INT, `pos-y` INT')\
         .format("csv")\
         .option("header", "true")\
-        .load("data/stream/mower")
+        .load(stream_directory)
     
     model = DecisionTreeClassificationModel.load("data/models/mower_decision_tree")
 

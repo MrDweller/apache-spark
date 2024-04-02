@@ -25,9 +25,13 @@ def orchestration(requested_service_definition, requester_system_address, reques
             "systemName": requester_system_name
         }
     }
-    if (os.environ["SERVER_MODE"] == "secure"):
-        response = requests.post(f"https://{orchestrator_address}:{orchestrator_port}/orchestrator/orchestration", cert=cert, verify=False, json=request_body)
-    else:
-        response = requests.post(f"http://{orchestrator_address}:{orchestrator_port}/orchestrator/orchestration", json=request_body)
-
+    security = query_result["serviceQueryData"][0]["secure"]
+    match security:
+        case "CERTIFICATE":
+            response = requests.post(f"https://{orchestrator_address}:{orchestrator_port}/orchestrator/orchestration", cert=cert, verify=False, json=request_body)
+        case "NOT_SECURE":
+            response = requests.post(f"http://{orchestrator_address}:{orchestrator_port}/orchestrator/orchestration", json=request_body)
+        case _:
+            raise NotImplementedError(f"a consumer for {security} level security is not implemented")
+        
     return response.json()
