@@ -44,7 +44,7 @@ def query(service_definition_requirement, serviceregistry_config: ServiceRegistr
     sr_address = serviceregistry_config.serviceregistry_address
     sr_port = serviceregistry_config.serviceregistry_port
 
-    match security:
+    match serviceregistry_config.serviceregistry_security_mode:
         case security.SecurityMode.CERTIFICATE:
             response = requests.post(f"https://{sr_address}:{sr_port}/serviceregistry/query", cert=cert, verify=False, json=request_body)
         case security.SecurityMode.NOT_SECURE:

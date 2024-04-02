@@ -21,6 +21,12 @@ SERVICE_REGISTRY_ADDRESS = os.environ["SERVICE_REGISTRY_ADDRESS"]
 SERVICE_REGISTRY_PORT = serviceregistry_port=os.environ["SERVICE_REGISTRY_PORT"]
 SERVICE_REGISTRY_SECURITY_MODE = serviceregistry_security_mode=os.environ["SERVICE_REGISTRY_SECURITY_MODE"]
 
+SERVICE_REGISTRY_CONFIG = serviceregistry_config=arrowhead.serviceregistry.ServiceRegistryConfig(
+    serviceregistry_address=SERVICE_REGISTRY_ADDRESS,
+    serviceregistry_port=SERVICE_REGISTRY_PORT,
+    serviceregistry_security_mode=arrowhead.serviceregistry.security.SecurityMode.from_str(SERVICE_REGISTRY_SECURITY_MODE),
+)
+
 def handle_stream_prediction(df, epoch_id):
     df.show()
 
@@ -33,7 +39,7 @@ def handle_stream_prediction(df, epoch_id):
             time = prediction["timestamp"]
             print(f"found error state: {state}, for {id} at time {time}")
 
-            orchestration_response = arrowhead.orchestrator.orchestration(requested_service_definition=state, requester_system_address=ADDRESS, requester_system_port=PORT, requester_system_name=SYSTEM_NAME, cert=(CERT_FILE_PATH, KEY_FILE_PATH))
+            orchestration_response = arrowhead.orchestrator.orchestration(requested_service_definition=state, requester_system_address=ADDRESS, requester_system_port=PORT, requester_system_name=SYSTEM_NAME, serviceregistry_config=SERVICE_REGISTRY_CONFIG, cert=(CERT_FILE_PATH, KEY_FILE_PATH))
 
             print("\n", orchestration_response)
 
@@ -53,11 +59,7 @@ if __name__ == "__main__":
         address=ADDRESS, 
         port=PORT, 
         system_name=SYSTEM_NAME, 
-        serviceregistry_config=arrowhead.serviceregistry.ServiceRegistryConfig(
-            serviceregistry_address=SERVICE_REGISTRY_ADDRESS,
-            serviceregistry_port=SERVICE_REGISTRY_PORT,
-            serviceregistry_security_mode=arrowhead.serviceregistry.security.SecurityMode.from_str(SERVICE_REGISTRY_SECURITY_MODE),
-        ), 
+        serviceregistry_config=SERVICE_REGISTRY_CONFIG, 
         cert=(CERT_FILE_PATH, KEY_FILE_PATH)
     )
 
