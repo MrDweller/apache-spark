@@ -11,8 +11,8 @@ import arrowhead.serviceregistry
 import arrowhead.orchestrator
 
 
-CERT_FILE_PATH = os.environ["CERT_FILE_PATH"]
-KEY_FILE_PATH = os.environ["KEY_FILE_PATH"]
+CERT_FILE_PATH = os.environ["ERROR_CODES_CERT_FILE_PATH"]
+KEY_FILE_PATH = os.environ["ERROR_CODES_KEY_FILE_PATH"]
 
 ADDRESS=os.environ["DOMAIN_ADDRESS"]
 PORT=os.environ["DOMAIN_PORT"]
