@@ -50,10 +50,7 @@ def handle_stream_prediction(df, epoch_id):
                     uri = response["serviceUri"]
 
                     response = requests.post(f"https://{address}:{port}{uri}", cert=(CERT_FILE_PATH, KEY_FILE_PATH), verify=False)
-                    print(response)
-
-                    if response.ok:
-                        print(response.json())
+                    print(response.json())
 
 def predict(df, epoch_id):
     df.show()
