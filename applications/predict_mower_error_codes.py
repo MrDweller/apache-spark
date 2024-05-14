@@ -49,7 +49,10 @@ def handle_stream_prediction(df, epoch_id):
                     port = response["provider"]["port"]
                     uri = response["serviceUri"]
 
-                    response = requests.post(f"https://{address}:{port}{uri}", cert=(CERT_FILE_PATH, KEY_FILE_PATH), verify=False)
+                    url = f"https://{address}:{port}{uri}"
+                    print(F"sending notification to: {url}")
+
+                    response = requests.post(url, cert=(CERT_FILE_PATH, KEY_FILE_PATH), verify=False)
                     print(response.json())
 
 def predict(df, epoch_id):
