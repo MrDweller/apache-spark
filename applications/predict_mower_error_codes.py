@@ -53,7 +53,6 @@ def handle_stream_prediction(df, epoch_id):
                     print(F"sending notification to: {url}")
 
                     response = requests.post(url, cert=(CERT_FILE_PATH, KEY_FILE_PATH), verify=False)
-                    print(response.json())
 
 def predict(df, epoch_id):
     df.show()
