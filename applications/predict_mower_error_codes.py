@@ -39,7 +39,7 @@ def handle_stream_prediction(df, epoch_id):
             time = prediction["timestamp"]
             print(f"found error state: {state}, for {id} at time {time}")
 
-            orchestration_response = arrowhead.orchestrator.orchestration(requested_service_definition=state, requester_system_address=ADDRESS, requester_system_port=PORT, requester_system_name=SYSTEM_NAME, serviceregistry_config=SERVICE_REGISTRY_CONFIG, cert=(CERT_FILE_PATH, KEY_FILE_PATH))
+            orchestration_response = arrowhead.orchestrator.orchestration(requested_service_definition=F"notify-{state}", requester_system_address=ADDRESS, requester_system_port=PORT, requester_system_name=SYSTEM_NAME, serviceregistry_config=SERVICE_REGISTRY_CONFIG, cert=(CERT_FILE_PATH, KEY_FILE_PATH))
 
             print("\n", orchestration_response)
 
