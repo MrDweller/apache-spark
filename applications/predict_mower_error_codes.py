@@ -62,7 +62,7 @@ def predict(df, epoch_id):
             states.append(dict[row['MowerApp_Error_errorCode']][0])
 
     print(states)
-    
+
     pdf = df.toPandas()
     pdf.insert(5, "state", states)
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     query = streamingDF \
         .writeStream \
         .format("console") \
-        .foreachBatch(handle_stream_prediction) \
+        .foreachBatch(predict) \
         .option("truncate", False) \
         .start()
 
