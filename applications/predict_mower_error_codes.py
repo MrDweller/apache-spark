@@ -89,19 +89,14 @@ if __name__ == "__main__":
     mapping = spark.read.format("parquet").load('data/mappings/error_codes')
     dict = mapping.toPandas().to_dict()
 
-        
-    df.show()
-
     states = []
     for row in df.collect():
             states.append(dict[row['MowerApp_Error_errorCode']][0])
 
-    print(states)
     pdf = df.toPandas()
     pdf.insert(5, "state", states)
 
     df = spark.createDataFrame(pdf)
-    df.show()
 
     finalDF = df
 

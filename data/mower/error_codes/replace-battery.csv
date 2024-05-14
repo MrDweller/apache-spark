@@ -1,0 +1,3 @@
+id,timestamp,MowerApp_Error_errorCode,pos-x,pos-y
+mower-1,2024-03-11T09:11:25.323596,MSG_ID_BATTERY_NEAR_END_OF_LIFE,1,1
+
