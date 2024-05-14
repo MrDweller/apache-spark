@@ -51,6 +51,26 @@ def handle_stream_prediction(df, epoch_id):
 
                     requests.post(f"https://{address}:{port}{uri}", cert=(CERT_FILE_PATH, KEY_FILE_PATH), verify=False)
 
+def predict(df, epoch_id):
+    df.show()
+
+    mapping = spark.read.format("parquet").load('data/mappings/error_codes')
+    dict = mapping.toPandas().to_dict()
+
+    states = []
+    for row in df.collect():
+            states.append(dict[row['MowerApp_Error_errorCode']][0])
+
+    print(states)
+    
+    pdf = df.toPandas()
+    pdf.insert(5, "state", states)
+
+    df = spark.createDataFrame(pdf)
+
+    df.show()
+
+    handle_stream_prediction(df=df, epoch_id=epoch_id)
 
 if __name__ == "__main__":
 
@@ -84,25 +104,8 @@ if __name__ == "__main__":
     
     streamingDF.printSchema()
 
-    df = streamingDF
-
-    mapping = spark.read.format("parquet").load('data/mappings/error_codes')
-    dict = mapping.toPandas().to_dict()
-
-    states = []
-    for row in df.collect():
-            states.append(dict[row['MowerApp_Error_errorCode']][0])
-
-    pdf = df.toPandas()
-    pdf.insert(5, "state", states)
-
-    df = spark.createDataFrame(pdf)
-
-    finalDF = df
-
-
     # Start the streaming query
-    query = finalDF \
+    query = streamingDF \
         .writeStream \
         .format("console") \
         .foreachBatch(handle_stream_prediction) \
