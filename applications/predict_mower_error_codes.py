@@ -11,12 +11,12 @@ import arrowhead.serviceregistry
 import arrowhead.orchestrator
 
 
-CERT_FILE_PATH = os.environ["ERROR_CODES_CERT_FILE_PATH"]
-KEY_FILE_PATH = os.environ["ERROR_CODES_KEY_FILE_PATH"]
+CERT_FILE_PATH = os.environ["DECISION_TREE_CERT_FILE_PATH"]
+KEY_FILE_PATH = os.environ["DECISION_TREE_KEY_FILE_PATH"]
 
 ADDRESS=os.environ["DOMAIN_ADDRESS"]
 PORT=os.environ["DOMAIN_PORT"]
-SYSTEM_NAME="anomaly-detector-error-codes"
+SYSTEM_NAME="anomaly-detector-decision-tree"
 SERVICE_REGISTRY_ADDRESS = os.environ["SERVICE_REGISTRY_ADDRESS"]
 SERVICE_REGISTRY_PORT = serviceregistry_port=os.environ["SERVICE_REGISTRY_PORT"]
 SERVICE_REGISTRY_SECURITY_MODE = serviceregistry_security_mode=os.environ["SERVICE_REGISTRY_SECURITY_MODE"]
