@@ -75,13 +75,14 @@ def predict(df, epoch_id):
 if __name__ == "__main__":
 
     # Register this anomaly detector in the arrowhead service registry
-    arrowhead.serviceregistry.register_system(
+    registration_response = arrowhead.serviceregistry.register_system(
         address=ADDRESS, 
         port=PORT, 
         system_name=SYSTEM_NAME, 
         serviceregistry_config=SERVICE_REGISTRY_CONFIG, 
         cert=(CERT_FILE_PATH, KEY_FILE_PATH)
     )
+    print(F"\n {registration_response}")
 
     stream_directory =  "data/stream/mower" # stream data from a local directory 
     if not os.path.exists(stream_directory):
