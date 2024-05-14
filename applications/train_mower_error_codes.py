@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
 import pandas as pd
-from pyspark.sql.functions import col, expr, when
 
 spark = SparkSession.builder\
         .appName("Mower error codes")\
