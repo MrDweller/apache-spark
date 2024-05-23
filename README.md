@@ -42,3 +42,11 @@ sh runApplication.sh applications/<prediction_script.py>
 Choose the desired prediction application and enter it instead of `<prediction_script.py>`.
 
 **NOTE:** If you are running the system on a Linux machine, it might be necessary to change the access for the stream directory. 
+
+## Trigger events
+In order to get the analytics to trigger an event, you could simply copy an event data point that is found `apache-spark/data/mower`, and place it at `apache-spark/data/stream/mower/`.
+This assumes that an spark application is running. If the running spark application is `predict_mower_decision_tree_stream.py` use the data point in `apache-spark/data/stream/mower/`. If instead `predict_mower_error_codes.py` is used, then use the data point in `apache-spark/data/stream/mower/error_codes` 
+
+## Overseeing the applications
+You can oversee your started applications at [http://localhost:9090](http://localhost:9090).
+Here you can see your running applications, how much resources they are using and kill them if necessary.
